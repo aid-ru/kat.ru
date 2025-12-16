@@ -1,24 +1,55 @@
-*.log
-.DS_Store
+```
+# Dependencies
+vendor/
+composer.lock
+
+# Environment
 .env
-.env.backup
-.env.production
-.phpactor.json
-.phpunit.result.cache
-/.fleet
-/.idea
-/.nova
-/.phpunit.cache
-/.vscode
-/.zed
-/auth.json
-/node_modules
-/public/build
-/public/hot
-/public/storage
-/storage/*.key
-/storage/pail
-/vendor
-Homestead.json
-Homestead.yaml
+.env.local
+*.env.*
+
+# Logs
+*.log
+
+# Editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
 Thumbs.db
+
+# Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Build
+dist/
+build/
+target/
+*.so
+*.dylib
+*.dll
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Testing
+.coverage
+coverage/
+htmlcov/
+.phpunit.result.cache
+
+# Laravel specific
+bootstrap/cache/
+storage/logs/
+storage/framework/cache/
+storage/framework/sessions/
+storage/framework/views/
+public/storage
+```
