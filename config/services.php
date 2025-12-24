@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'yandex_smartcaptcha' => [
+        'client_key' => env('YANDEX_SMARTCAPTCHA_CLIENT_KEY'),
+        'secret_key' => env('YANDEX_SMARTCAPTCHA_SECRET_KEY'),
+    ],
+
 ];

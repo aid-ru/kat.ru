@@ -6,50 +6,27 @@ composer.lock
 # Environment
 .env
 .env.local
-*.env.*
+.env.*
 
 # Logs
 *.log
 
+# Cache
+bootstrap/cache/
+storage/framework/cache/
+storage/framework/sessions/
+storage/framework/views/
+
+# Compiled files
+*.php~
+
 # Editor
 .vscode/
 .idea/
+*.swp
+*.swo
 
 # OS
 .DS_Store
 Thumbs.db
-
-# Cache
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# Build
-dist/
-build/
-target/
-*.so
-*.dylib
-*.dll
-
-# Temporary files
-*.tmp
-*.temp
-*.swp
-*.swo
-
-# Testing
-.coverage
-coverage/
-htmlcov/
-.phpunit.result.cache
-
-# Laravel specific
-bootstrap/cache/
-storage/logs/
-storage/framework/cache/
-storage/framework/sessions/
-storage/framework/views/
-public/storage
 ```

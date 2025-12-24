@@ -25,6 +25,7 @@ new #[Layout('layouts.guest')] class extends Component
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+            'recaptcha_response' => ['required', new \App\Rules\YandexSmartCaptchaRule()],
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
@@ -76,6 +77,9 @@ new #[Layout('layouts.guest')] class extends Component
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
+        <!-- Yandex SmartCaptcha Token -->
+        <input type="hidden" wire:model="recaptcha_response" id="recaptcha_response">
+
         <div class="flex items-center justify-end mt-4">
             <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}" wire:navigate>
                 {{ __('Already registered?') }}
@@ -86,4 +90,35 @@ new #[Layout('layouts.guest')] class extends Component
             </x-primary-button>
         </div>
     </form>
+    
+    <!-- Yandex SmartCaptcha -->
+    <script src="https://captcha-api.yandex.ru/loader.js?render=onload&hashkey={{ config('services.yandex_smartcaptcha.client_key') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Проверяем, что капча уже пройдена
+                    if (window.smartCaptcha) {
+                        window.smartCaptcha.validate()
+                            .then(function(token) {
+                                // Устанавливаем токен в поле recaptcha_response
+                                document.getElementById('recaptcha_response').value = token;
+                                
+                                // Отправляем форму
+                                form.submit();
+                            })
+                            .catch(function(error) {
+                                console.error('Yandex SmartCaptcha validation failed:', error);
+                                alert('Пожалуйста, пройдите проверку капчи');
+                            });
+                    } else {
+                        form.submit();
+                    }
+                });
+            }
+        });
+    </script>
 </div>

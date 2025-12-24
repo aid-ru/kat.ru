@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Rules\YandexSmartCaptchaRule;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -20,6 +21,9 @@ class LoginForm extends Form
 
     #[Validate('boolean')]
     public bool $remember = false;
+
+    #[Validate(['required', new YandexSmartCaptchaRule()])]
+    public string $recaptcha_response = '';
 
     /**
      * Attempt to authenticate the request's credentials.
