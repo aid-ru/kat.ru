@@ -45,6 +45,7 @@
                 style="height: 100px"
                 id="captcha-container"
                 class="smart-captcha"
+                data-hl="ru"
                 data-sitekey="{{ env('YANDEX_SMART_CAPTCHA_CLIENT_KEY') }}"
             ></div>
             @error('smart-token')
