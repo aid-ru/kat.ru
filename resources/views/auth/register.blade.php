@@ -39,6 +39,21 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
+        <!-- Капча -->
+        <div class="mt-4">
+            <div 
+                style="height: 100px"
+                id="captcha-container"
+                class="smart-captcha"
+                data-sitekey="{{ env('YANDEX_SMART_CAPTCHA_CLIENT_KEY') }}"
+            ></div>
+            @error('smart-token')
+                <div class="text-sm text-red-600 mt-1" role="alert">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+
         <div class="flex items-center justify-end mt-4">
             <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
                 {{ __('Already registered?') }}
