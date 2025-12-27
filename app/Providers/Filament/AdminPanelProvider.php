@@ -27,7 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login(false) // Disable Filament's own login
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -53,7 +53,8 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->authMiddleware([
-                Authenticate::class,
+                \App\Http\Middleware\Filament\Authenticate::class,
+                \App\Http\Middleware\Filament\CheckAdminAccess::class,
             ]);
     }
 }
