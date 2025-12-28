@@ -1,5 +1,5 @@
 <script
-  src="https://smartcaptcha.cloud.yandex.ru/captcha.js?lang=ru"
+  src="https://smartcaptcha.cloud.yandex.ru/captcha.js"
   defer
 ></script>
 
@@ -13,7 +13,7 @@ function initSmartCaptcha() {
       sitekey: '{{ env('YANDEX_SMART_CAPTCHA_CLIENT_KEY') }}',
       hideShield: true,
       invisible: true,
-      lang: 'ru',
+      hl: 'ru',
       callback: function(token) {
         document.getElementById('smart-captcha-form').submit();
       },
