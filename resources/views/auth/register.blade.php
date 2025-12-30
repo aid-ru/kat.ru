@@ -48,7 +48,7 @@
         @enderror
 
         <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
+            <a class="underline text-sm text-gray-500 dark:hover:text-gray-100 hover:text-gray-900 rounded-md" href="{{ route('login') }}">
                 {{ __('Already registered?') }}
             </a>
 
@@ -58,7 +58,7 @@
         </div>
     </form>
 
-    <a href="https://yandex.com/legal/smartcaptcha_notice/en/" target="_blank" class="underline text-xs text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Политика конфиденциальности</a>
+    <a href="https://yandex.com/legal/smartcaptcha_notice/en/" target="_blank" class="underline text-xs text-gray-500 dark:hover:text-gray-100 hover:text-gray-900">Политика конфиденциальности</a>
 
     @include('auth/smart-captcha-scripts')
 </x-guest-layout>
