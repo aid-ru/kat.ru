@@ -20,7 +20,7 @@
 
 /* Внутреннее позиционирование */
 .kat_div_inner {
-  @apply p-4 dark:text-gray-300 text-gray-700;
+  @apply p-4;
 }
 /* ======= DIVы, формирующие поле для контента ======= */
 
@@ -28,7 +28,7 @@
 
 /* H2 - заголовок страницы */
 .h2_header {
-  @apply font-semibold text-xl text-gray-300 leading-tight;
+  @apply font-semibold text-xl dark:text-gray-400 text-gray-100 leading-tight;
 }
 
 @layer base {

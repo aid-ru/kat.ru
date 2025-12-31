@@ -21,7 +21,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
 
-    <body class="font-sans antialiased dark:text-gray-200 text-gray-800">
+    <body class="font-sans antialiased dark:text-gray-300 text-gray-800">
         <div class="min-h-screen dark:bg-black bg-white">
             <nav x-data="{ open: false }" class="dark:bg-black bg-white border-b dark:border-gray-800 border-gray-200">
                 <!-- Primary Navigation Menu -->
@@ -40,7 +40,7 @@
             </nav>
 
             <!-- Page Heading -->
-            <header class="bg-gray-900 border-b border-gray-800">
+            <header class="dark:bg-gray-900 bg-[#369] border-b border-gray-800">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     <h2 class="h2_header">
                         Каталог бесплатных объявлений
