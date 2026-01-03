@@ -54,6 +54,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         return $this->id === 1 || $this->role === 'admin';
     }
 
+    // для админки Filament
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->isAdmin();
