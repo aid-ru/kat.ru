@@ -8,7 +8,7 @@ class ListingServiceDetails extends Model
 {
     public $timestamps = false; // Экономим ресурсы, так как дата есть в основной таблице
     protected $fillable = [
-        'listing_id', 'service_type', 'duration_unit', 'access_info', 'is_recurring', 
+        'listing_id', 'sub_type', 'service_type', 'duration_unit', 'access_info', 'is_recurring', 
         'extra_metadata'
     ];
 

@@ -36,10 +36,11 @@ class ListingController extends Controller
                 ]);
 
                 // 3. Список ВСЕХ стандартных полей (которые мы НЕ хотим в extra_metadata)
-                $systemFields = ['_token', '_method', 'title', 'price', 'description', 'location_id', 'category_id', 'condition'];
+                $systemFields = ['_token', '_method', 'listing_type', 'sub_type', 'title', 'price', 'description', 'location_id', 'category_id', 'condition'];
 
                 // Собираем ВСЕ стандартные поля всех существующих типов деталей
                 $allStandardAttributes = [
+                    'listing_type', 'sub_type', 
                     'brand', 'model', 'color', 'size', 'material', // products
                     'service_type', 'duration_unit', 'access_info', // services
                     'job_type', 'salary_from', 'salary_to', 'experience_years', // jobs
@@ -70,7 +71,8 @@ class ListingController extends Controller
 
                 // 6. Сохраняем детали
                 $detailsData = array_merge(
-                    $request->only($currentTypeFields),
+                    //$request->only($currentTypeFields),
+                    $request->only($currentTypeFields + ['sub_type']), // Добавили sub_type
                     ['extra_metadata' => $extra]
                 );
 

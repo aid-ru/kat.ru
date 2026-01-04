@@ -36,6 +36,30 @@
                     </select>
                 </div>
 
+                <!-- Глобальный тип (из listings) -->
+                <template x-if="settings.listing_types?.length">
+                    <div class="mb-4">
+                        <label class="block font-bold">Тип сделки</label>
+                        <select name="listing_type" class="w-full border-gray-300 rounded" required>
+                            <template x-for="t in settings.listing_types" :key="t">
+                                <option :value="t" x-text="t"></option>
+                            </template>
+                        </select>
+                    </div>
+                </template>
+
+                <!-- Подтип (из деталей) -->
+                <template x-if="settings.sub_types?.length">
+                    <div class="mb-4">
+                        <label class="block font-bold">Уточнение категории</label>
+                        <select name="sub_type" class="w-full border-gray-300 rounded" required>
+                            <template x-for="st in settings.sub_types" :key="st">
+                                <option :value="st" x-text="st"></option>
+                            </template>
+                        </select>
+                    </div>
+                </template>
+
                 <!-- Поле ЦЕНА (скрывается динамически) -->
                 <div class="mb-4" x-show="!settings.hide_price" x-cloak>
                     <label class="block font-bold">Стоимость (₽)</label>

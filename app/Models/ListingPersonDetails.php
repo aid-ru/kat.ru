@@ -8,7 +8,7 @@ class ListingPersonDetails extends Model
 {
     public $timestamps = false; // Экономим ресурсы, так как дата есть в основной таблице
     protected $fillable = [
-        'listing_id', 'gender', 'age', 'relationship_goal', 'height', 'education',
+        'listing_id', 'sub_type', 'gender', 'age', 'relationship_goal', 'height', 'education',
         'extra_metadata'
     ];
 

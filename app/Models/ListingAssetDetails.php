@@ -8,7 +8,7 @@ class ListingAssetDetails extends Model
 {
     public $timestamps = false; // Экономим ресурсы, так как дата есть в основной таблице
     protected $fillable = [
-        'listing_id', 
+        'listing_id', 'sub_type', 
         'extra_metadata'
     ];
 

@@ -8,7 +8,7 @@ class ListingJobDetails extends Model
 {
     public $timestamps = false; // Экономим ресурсы, так как дата есть в основной таблице
     protected $fillable = [
-        'listing_id', 'job_type', 'employment_type', 'schedule', 
+        'listing_id', 'sub_type', 'job_type', 'employment_type', 'schedule', 
         'salary_from', 'salary_to', 'currency', 'experience_years',
         'extra_metadata'
     ];

@@ -64,6 +64,16 @@ class CategoryForm
                             ->label('Кастомные поля')
                             ->placeholder('Напр: материал'),
                     ]),
+
+                Section::make('Конструктор дискриминаторов')
+                    ->components([
+                        TagsInput::make('settings.listing_types')
+                            ->label('Глобальные типы (Продажа, Аренда и т.д.)'),
+                            
+                        TagsInput::make('settings.sub_types')
+                            ->label('Подтипы категории (Квартира, Дом и т.д.)'),
+                    ]),
+
             ]);
     }
 }

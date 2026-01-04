@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Listing extends Model
 {
-    protected $fillable = ['user_id', 'category_id', 'location_id', 'title', 'description', 'price', 'condition', 'status'];
+    protected $fillable = ['user_id', 'category_id', 'listing_type', 'location_id', 'title', 'description', 'price', 'condition', 'status'];
 
     public function category(): BelongsTo
     {
