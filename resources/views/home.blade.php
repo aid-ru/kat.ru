@@ -15,7 +15,14 @@
                     @foreach($categoriesByType as $type => $group)
                         <div class="mb-8">
                             <h2 class="text-xl font-bold uppercase text-gray-700 border-b mb-4">
-                                {{ $type === 'product' ? 'Товары' : ($type === 'service' ? 'Услуги' : 'Прочее') }}
+                                {{ match($type) {
+                                    'product' => 'Товары',
+                                    'service' => 'Услуги',
+                                    'job'     => 'Работа',
+                                    'person'  => 'Знакомства',
+                                    'asset'   => 'Активы',
+                                    default   => 'Прочее'
+                                } }}
                             </h2>
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 @foreach($group as $mainCategory)
@@ -56,7 +63,7 @@
                             @if($listing->productDetails)
                                 <p class="text-sm">Бренд: {{ $listing->productDetails->brand }}</p>
                             @endif
-                            <a href="#" class="text-blue-500 hover:underline">Подробнее</a>
+                            <a href="{{ route('listings.show', $listing) }}">Подробнее</a>
                         </div>
                     @endforeach
                 </div>

@@ -79,6 +79,7 @@ class ListingController extends Controller
                     'service' => $newListing->serviceDetails()->create($detailsData),
                     'job'     => $newListing->jobDetails()->create($detailsData),
                     'person'  => $newListing->personDetails()->create($detailsData),
+                    'asset'   => $newListing->assetDetails()->create($detailsData),
                 };
 
                 return $newListing;
@@ -107,7 +108,8 @@ class ListingController extends Controller
     public function create() {
         // Получаем только основные категории для выбора
         $categories = Category::orderBy('sort_order')->get();
-        $locations = Location::orderBy('name')->get();
+        //$locations = Location::orderBy('name')->get();
+        $locations = Location::whereNull('parent_id')->with('children')->get();
         return view('listings.create', compact('categories' ,'locations'));
     }
 

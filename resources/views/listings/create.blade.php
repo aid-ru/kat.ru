@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="py-12">
+    <div class="py-12" x-data="listingForm()">
         <div class="max-w-3xl mx-auto p-8 rounded shadow">
             <h2 class="text-2xl font-bold mb-6">Создать объявление</h2>
 
@@ -18,123 +18,97 @@
             <form action="{{ route('listings.store') }}" method="POST">
                 @csrf
 
-                {{-- Общие обязательные поля --}}
+                <!-- Выбор категории -->
                 <div class="mb-4">
                     <label class="block font-bold">Категория</label>
-                    <select name="category_id" id="category-select" class="w-full border-gray-300 rounded" required>
-                        <option value="">-- Выберите категорию --</option>
+                    <select name="category_id" 
+                            class="w-full border-gray-300 rounded" 
+                            @change="updateCategory($event)"
+                            required>
+                        <option value="">-- Выберите --</option>
                         @foreach($categories as $category)
-                            <option value="{{ $category->id }}" data-type="{{ $category->type }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                            <option value="{{ $category->id }}" 
+                                    data-type="{{ $category->type }}"
+                                    data-settings='@json($category->settings ?? [])'>
                                 {{ $category->name }}
                             </option>
                         @endforeach
                     </select>
                 </div>
 
-                <div class="mb-4">
-                    <label class="block font-bold">Заголовок</label>
-                    <input type="text" name="title" value="{{ old('title') }}" class="w-full border-gray-300 rounded" required>
-                </div>
-
-                <div class="mb-4">
+                <!-- Поле ЦЕНА (скрывается динамически) -->
+                <div class="mb-4" x-show="!settings.hide_price" x-cloak>
                     <label class="block font-bold">Стоимость (₽)</label>
-                    <input type="number" name="price" value="{{ old('price') }}" class="w-full border-gray-300 rounded" required>
+                    <input type="number" name="price" class="w-full border-gray-300 rounded" :required="!settings.hide_price">
                 </div>
 
-                <div class="mb-4">
-                    <label class="block font-bold">Город / Локация</label>
-                    <select name="location_id" class="w-full border-gray-300 rounded" required>
-                        <option value="">-- Выберите город --</option>
+                <!-- Поле ЛОКАЦИЯ (скрывается динамически) -->
+                <div class="mb-4" x-show="!settings.hide_location" x-cloak>
+                    <label class="block font-bold">Локация</label>
+                    <!--
+                    <select name="location_id" class="w-full border-gray-300 rounded" :required="!settings.hide_location">
                         @foreach($locations as $location)
-                            @if($location->children->count() > 0)
-                                <optgroup label="{{ $location->name }}">
-                                    @foreach($location->children as $child)
-                                        <option value="{{ $child->id }}" {{ old('location_id') == $child->id ? 'selected' : '' }}>
-                                            {{ $child->name }}
-                                        </li>
-                                    @endforeach
-                                </optgroup>
-                            @else
-                                <option value="{{ $location->id }}" {{ old('location_id') == $location->id ? 'selected' : '' }}>
-                                    {{ $location->name }}
-                                </option>
-                            @endif
+                            <option value="{{ $location->id }}">{{ $location->name }}</option>
+                        @endforeach
+                    </select>
+                    //-->
+                    <select name="location_id" class="w-full border-gray-300 rounded" :required="!settings.hide_location">
+                        @foreach($locations as $region)
+                            <optgroup label="{{ $region->name }}">
+                                @foreach($region->children as $city)
+                                    <option value="{{ $city->id }}">{{ $city->name }}</option>
+                                @endforeach
+                            </optgroup>
                         @endforeach
                     </select>
                 </div>
 
+                <!-- ДИНАМИЧЕСКИЕ КАСТОМНЫЕ ПОЛЯ (из тегов Filament) -->
+                <template x-for="field in settings.custom_fields" :key="field">
+                    <div class="mb-4 bg-blue-50 p-2 rounded border border-blue-100">
+                        <label class="block font-bold text-blue-800" x-text="field.charAt(0).toUpperCase() + field.slice(1).replace('_', ' ')"></label>
+                        <input type="text" :name="field" class="w-full border-gray-300 rounded" :placeholder="'Введите ' + field">
+                    </div>
+                </template>
+
+                <!-- Стандартные блоки типов (Product, Service и т.д.) -->
+                <div x-show="type === 'product'" class="p-4 bg-gray-50 mb-4 rounded" x-cloak>
+                    <input type="text" name="brand" placeholder="Бренд" class="w-full border-gray-300 rounded mb-2">
+                    <input type="text" name="model" placeholder="Модель" class="w-full border-gray-300 rounded">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block font-bold">Заголовок</label>
+                    <input type="text" name="title" class="w-full border-gray-300 rounded" required>
+                </div>
+
                 <div class="mb-4">
                     <label class="block font-bold">Описание</label>
-                    <textarea name="description" rows="5" class="w-full border-gray-300 rounded" required>{{ old('description') }}</textarea>
+                    <textarea name="description" rows="5" class="w-full border-gray-300 rounded" required></textarea>
                 </div>
 
-                {{-- Динамические блоки --}}
-                
-                <!-- ТОВАРЫ -->
-                <div id="fields-product" class="extra-fields hidden bg-gray-50 p-4 mb-4 rounded border">
-                    <h3 class="font-bold mb-2">Характеристики товара</h3>
-                    <div class="grid grid-cols-2 gap-4">
-                        <input type="text" name="brand" value="{{ old('brand') }}" placeholder="Бренд" class="border-gray-300 rounded">
-                        <input type="text" name="model" value="{{ old('model') }}" placeholder="Модель" class="border-gray-300 rounded">
-                    </div>
-                </div>
-
-                <!-- УСЛУГИ -->
-                <div id="fields-service" class="extra-fields hidden bg-gray-50 p-4 mb-4 rounded border">
-                    <h3 class="font-bold mb-2">Детали услуги</h3>
-                    <select name="service_type" class="w-full border-gray-300 rounded mb-2">
-                        <option value="online" {{ old('online') == $location->id ? 'selected' : '' }}>Онлайн</option>
-                        <option value="offline" {{ old('offline') == $location->id ? 'selected' : '' }}>Очно</option>
-                    </select>
-                    <input type="text" name="access_info" value="{{ old('access_info') }}" placeholder="Ссылка на курс или адрес" class="w-full border-gray-300 rounded">
-                </div>
-
-                <!-- РАБОТА -->
-                <div id="fields-job" class="extra-fields hidden bg-gray-50 p-4 mb-4 rounded border">
-                    <h3 class="font-bold mb-2">Вакансия / Резюме</h3>
-                    <div class="grid grid-cols-2 gap-4">
-                        <input type="number" name="salary_from" value="{{ old('salary_from') }}" placeholder="Зарплата от" class="border-gray-300 rounded">
-                        <input type="text" name="experience_years" value="{{ old('experience_years') }}" placeholder="Опыт (лет)" class="border-gray-300 rounded">
-                    </div>
-                </div>
-
-                <!-- ЗНАКОМСТВА -->
-                <div id="fields-person" class="extra-fields hidden bg-gray-50 p-4 mb-4 rounded border">
-                    <h3 class="font-bold mb-2">О себе</h3>
-                    <div class="grid grid-cols-2 gap-4">
-                        <select name="gender" class="border-gray-300 rounded">
-                            <option value="male" {{ old('male') == $location->id ? 'selected' : '' }}>Мужчина</option>
-                            <option value="female" {{ old('female') == $location->id ? 'selected' : '' }}>Женщина</option>
-                        </select>
-                        <input type="number" name="age" value="{{ old('age') }}" placeholder="Возраст" class="border-gray-300 rounded">
-                        <input type="number" name="height" value="{{ old('height') }}" placeholder="Рост" class="border-gray-300 rounded">
-                        <input name="pizhama" value="{{ old('pizhama') }}" placeholder="Любимая пижама" class="border-gray-300 rounded">
-                    </div>
-                </div>
-
-                <div class="mt-6">
-                    <button type="submit" class="px-6 py-2 rounded">Опубликовать</button>
-                </div>
+                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">Опубликовать</button>
             </form>
         </div>
     </div>
 
     <script>
-        const categorySelect = document.getElementById('category-select');
-        const extraFields = document.querySelectorAll('.extra-fields');
-
-        function updateFields() {
-            extraFields.forEach(el => el.classList.add('hidden'));
-            const selected = categorySelect.options[categorySelect.selectedIndex];
-            const type = selected.getAttribute('data-type');
-            if (type) {
-                const target = document.getElementById('fields-' + type);
-                if (target) target.classList.remove('hidden');
+        function listingForm() {
+            return {
+                type: '',
+                settings: {},
+                updateCategory(e) {
+                    const option = e.target.options[e.target.selectedIndex];
+                    this.type = option.dataset.type || '';
+                    this.settings = JSON.parse(option.dataset.settings || '{}');
+                    
+                    // Если поле скрыто, обнуляем значение (чтобы не ушло в базу случайно)
+                    if (this.settings.hide_price) {
+                        document.getElementsByName('price')[0].value = 0;
+                    }
+                }
             }
         }
-
-        categorySelect.addEventListener('change', updateFields);
-        // Запускаем при загрузке (если форма вернулась с ошибками, но категория выбрана)
-        window.onload = updateFields;
     </script>
+    <style> [x-cloak] { display: none !important; } </style>
 </x-app-layout>

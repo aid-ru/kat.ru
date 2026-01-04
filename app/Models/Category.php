@@ -8,7 +8,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Category extends Model
 {
-    protected $fillable = ['parent_id', 'name', 'slug', 'type', 'sort_order'];
+    protected $fillable = [
+        'parent_id', 'name', 'slug', 'type', 'settings', 'sort_order'
+    ];
+
+    protected $casts = [
+        'settings' => 'array', // Это критично для корректной записи JSON
+    ];
 
     /**
      * Связь с родительской категорией

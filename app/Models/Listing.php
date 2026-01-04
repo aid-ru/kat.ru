@@ -40,6 +40,11 @@ class Listing extends Model
         return $this->hasOne(ListingPersonDetails::class);
     }
 
+    public function assetDetails(): HasOne
+    {
+        return $this->hasOne(ListingAssetDetails::class);
+    }
+
     // Динамическое получение деталей в зависимости от категории
     public function getDetailsAttribute()
     {
@@ -48,6 +53,7 @@ class Listing extends Model
             'service'   =>  $this->serviceDetails,
             'job'       =>  $this->jobDetails,
             'person'    =>  $this->personDetails,
+            'asset'     =>  $this->assetDetails,
             default     =>  null,
         };
     }

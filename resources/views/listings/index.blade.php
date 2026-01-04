@@ -5,7 +5,9 @@
             <div class="overflow-hidden shadow-sm sm:rounded-lg p-6">
                 @foreach($listings as $listing)
                     <div class="border-b py-2">
-                        <p class="font-bold">{{ $listing->title }} - {{ $listing->price }} ₽</p>
+                        <a href="{{ route('listings.show', $listing) }}">
+                            <p class="font-bold">{{ $listing->title }} - {{ $listing->price }} ₽</p>
+                        </a>
                     </div>
                 @endforeach
                 <div class="mt-4">{{ $listings->links() }}</div>
